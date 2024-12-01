@@ -5,3 +5,6 @@
 [submodule "deps/nvcore"]
 	path = deps/nvcore
 	url = https://github.com/lwdjohari/nvcore.git
+[submodule "deps/rapidyaml"]
+	path = deps/rapidyaml
+	url = https://github.com/biojppm/rapidyaml.git
