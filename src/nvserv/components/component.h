@@ -11,6 +11,8 @@ NVSERV_BEGIN_NAMESPACE(components)
 /// @brief Custom Component (non-core must be inherited from Component)
 class Component : public ComponentBase {
  public:
+ explicit Component(ComponentType type)
+                  : ComponentBase( type) {}
   explicit Component(const components::ComponentLocator& locator,
                      const components::ComponentConfig& config,
                      ComponentType type)
