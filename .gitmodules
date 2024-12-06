@@ -8,3 +8,6 @@
 [submodule "deps/rapidyaml"]
 	path = deps/rapidyaml
 	url = https://github.com/biojppm/rapidyaml.git
+[submodule "deps/rapidjson"]
+	path = deps/rapidjson
+	url = https://github.com/Tencent/rapidjson.git

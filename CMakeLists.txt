@@ -17,6 +17,25 @@ else()
     message(STATUS "Nvql lib nvcore: nvcore lib are already set, use nvcore from project.")
 endif()
 
+if(TARGET ryml)
+    message(STATUS "rapidyaml lib: RapidYaml lib are already set, use ryml from project.")
+else()
+    message(STATUS "rapidyaml lib: initialize rapidyaml lib.")
+    add_subdirectory(deps/rapidyaml/ build-rapidyaml)
+endif()
+
+if(TARGET RapidJSON)
+    message(STATUS "RapidJSON lib: RapidJSON lib are already set, use RapidJSON from project.")
+else()
+    message(STATUS "RapidJSON lib: initialize RapidJSON lib.")
+    set(RAPIDJSON_BUILD_CXX11 ON)
+    set(RAPIDJSON_BUILD_DOC  OFF)
+    set(RAPIDJSON_BUILD_EXAMPLES  OFF)
+    set(RAPIDJSON_BUILD_TESTS  OFF)
+    set(RAPIDJSON_BUILD_THIRDPARTY_GTEST OFF)
+    add_subdirectory(deps/rapidjson/ build-rapidjson)
+endif()
+
 if (TARGET absl::base)
     message(STATUS "Nvql lib ABSL: Abseil lib are already set, use ABSL from project.")
 else ()
@@ -45,6 +64,8 @@ add_library(${PROJECT_NAME}_core STATIC ${SOURCES_NVSERV_CORE} )
 target_link_libraries(${PROJECT_NAME}_core  
     PUBLIC
         nvcore 
+        ryml
+        RapidJSON
         absl::base 
         absl::base 
         absl::flat_hash_map 
