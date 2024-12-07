@@ -10,6 +10,25 @@ file(GLOB_RECURSE SOURCES_NVSERV_CORE CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.s
 )
 
+if(NOT DEFINED NVSERV_LIBRARY_VERSION OR NOT DEFINED NVSERV_LIBRARY_SOVERSION)
+    message(FATAL_ERROR "nvserv::core configuration ERROR:
+      please set option NVSERV_LIBRARY_VERSION or NVSERV_LIBRARY_SOVERSION!")
+endif()
+
+if(NOT NVSERV_BUILD_LOCAL_SHARED AND NOT NVSERV_BUILD_STATIC)
+    message(FATAL_ERROR "nvserv::core configuration ERROR:
+      please set option NVSERV_BUILD_STATIC or NVSERV_BUILD_LOCAL_SHARED!")
+endif()
+
+set(_LIBRARY_TYPE SHARED STATIC)
+set(CORE_FEATURE_DEFINITION)
+
+if(NVSERV_BUILD_LOCAL_SHARED)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    LIST(APPEND CORE_FEATURE_DEFINITION NVSERV_BUILD_LOCAL_SHARED=1)
+endif()
+
+
 if(NOT nvcore_FOUND)
     message(STATUS "Nvql lib nvcore: Initialize NvCore lib.")
     add_subdirectory(deps/nvcore/ build-nvcore)
@@ -44,7 +63,6 @@ else ()
     add_subdirectory(deps/abseil-lts20230125.1 build-abseil)
 endif ()
 
-set(CORE_FEATURE_DEFINITION)
 if(NVSERV_SERVER_REST)
     LIST(APPEND CORE_FEATURE_DEFINITION NVSERV_SERVER_REST=1)
 endif()
@@ -59,8 +77,27 @@ string(JOIN ", " CORE_FEATURES_JOIN ${CORE_FEATURE_DEFINITION})
 # Print the comma-separated list
 message(STATUS "Compile Flags: ${CORE_FEATURES_JOIN}")
 
+
 # nvserv::core
-add_library(${PROJECT_NAME}_core STATIC ${SOURCES_NVSERV_CORE} )
+add_library(${PROJECT_NAME}_core ${_LIBRARY_TYPE} ${SOURCES_NVSERV_CORE} )
+
+# Set runtime path for the shared library
+if(NVSERV_BUILD_LOCAL_SHARED)
+    set_target_properties(${PROJECT_NAME}_core PROPERTIES
+        LINKER_LANGUAGE CXX
+        BUILD_RPATH "$ORIGIN"                   # Use the directory of the binary
+        INSTALL_RPATH "$ORIGIN"                 # Set for installed binaries too
+        BUILD_WITH_INSTALL_RPATH TRUE           # Ensure RPATH is embedded during the build
+        VERSION ${NVSERV_LIBRARY_VERSION}       # Semantic Version of library
+        SOVERSION ${NVSERV_LIBRARY_SOVERSION}   # Linker version for sysmlink
+    )
+endif()
+
+if(NVSERV_BUILD_STATIC)
+    set_target_properties(${PROJECT_NAME}_core PROPERTIES
+        LINKER_LANGUAGE CXX
+    )
+endif()
 target_link_libraries(${PROJECT_NAME}_core  
     PUBLIC
         nvcore 
@@ -78,7 +115,9 @@ target_link_libraries(${PROJECT_NAME}_core
         absl::utility
         absl::status
     )
-set_target_properties(${PROJECT_NAME}_core PROPERTIES LINKER_LANGUAGE CXX)
+
+# Ensure dependencies are built
+add_dependencies(${PROJECT_NAME}_core nvcore ryml RapidJSON absl::base)
 target_compile_features(${PROJECT_NAME}_core PUBLIC ${CXX_FEATURE})
 target_compile_definitions(${PROJECT_NAME}_core PRIVATE ${CORE_FEATURE_DEFINITION})
 
@@ -92,6 +131,6 @@ add_library(${PROJECT_NAME}::core ALIAS ${PROJECT_NAME}_core )
 if(NOT TARGET nvserv::core )
     message(STATUS "Unit-Test nvserv::core: ${NVSERV_USE_TEST}")
     if(NVSERV_USE_TEST)
-        add_subdirectory(src/tests)
+        add_subdirectory(tests)
     endif()  
 endif()

@@ -6,43 +6,30 @@
 #include "nvserv/global_macro.h"
 
 NVSERV_BEGIN_NAMESPACE(components)
+
 class ComponentLocator {
  public:
-  explicit ComponentLocator(ComponentConfig& configs)
-                  : components_(InitializeImpl(*this, configs)) {}
+  explicit ComponentLocator(ComponentConfig& configs);
 
-  virtual ~ComponentLocator() {}
+  virtual ~ComponentLocator();
 
-  // void Initialize() {
-  //   components_ = std::move(InitializeImpl());
-  // };
+  void AttachComponentList(ComponentListBasePtr&& component_list) ;
 
-  ComponentListBasePtr Components() {
-    return components_;
-  }
+  void DetachComponentList();
 
-  const ComponentListBasePtr Components() const {
-    return components_;
-  }
+  bool IsComponentListAttached() const;
 
-  const ComponentBasePtr Resolve(const std::string& name) const {
-    if (!components_)
-      return nullptr;
+  ComponentListBasePtr Components();
 
-    return components_->GetComponent(name);
-  }
+  const ComponentListBasePtr Components() const;
 
-  ComponentBasePtr Resolve(const std::string& name) {
-    if (!components_)
-      return nullptr;
+  const ComponentBasePtr Resolve(const std::string& name) const;
 
-    return components_->GetComponent(name);
-  }
+  ComponentBasePtr Resolve(const std::string& name);
 
  private:
   std::shared_ptr<ComponentListBase> components_;
-
-  ComponentListBasePtr InitializeImpl(ComponentLocator& resolver,
-                                      ComponentConfig& config);
+  bool is_component_list_attached;
 };
+
 NVSERV_END_NAMESPACE

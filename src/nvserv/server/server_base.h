@@ -24,8 +24,8 @@ class ServerBase : public components::Component {
  protected:
   ServerBase(components::ComponentLocator& locator,
              components::ComponentConfig& config,
-             nvserv::components::ComponentType type)
-                  : components::Component(locator, config, type) {}
+             nvserv::components::ComponentType type);
+                 
 };
 
 NVSERV_END_NAMESPACE

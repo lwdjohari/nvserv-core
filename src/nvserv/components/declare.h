@@ -24,7 +24,7 @@ using ComponentConfigPtr = std::shared_ptr<ComponentConfig>;
 
 
 enum class ComponentType {
-  kInknown = 0,
+  kUnknown = 0,
   kServerRest = 1,
   kServerGrpc = 2,
   kServerSocket = 3,
