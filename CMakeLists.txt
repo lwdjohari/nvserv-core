@@ -24,6 +24,7 @@ set(_LIBRARY_TYPE SHARED STATIC)
 set(CORE_FEATURE_DEFINITION)
 
 if(NVSERV_BUILD_LOCAL_SHARED)
+    set(_LIBRARY_TYPE SHARED)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     LIST(APPEND CORE_FEATURE_DEFINITION NVSERV_BUILD_LOCAL_SHARED=1)
 endif()
@@ -85,9 +86,9 @@ add_library(${PROJECT_NAME}_core ${_LIBRARY_TYPE} ${SOURCES_NVSERV_CORE} )
 if(NVSERV_BUILD_LOCAL_SHARED)
     set_target_properties(${PROJECT_NAME}_core PROPERTIES
         LINKER_LANGUAGE CXX
-        BUILD_RPATH "$ORIGIN"                   # Use the directory of the binary
-        INSTALL_RPATH "$ORIGIN"                 # Set for installed binaries too
-        BUILD_WITH_INSTALL_RPATH TRUE           # Ensure RPATH is embedded during the build
+        # BUILD_RPATH "$ORIGIN"                   # Use the directory of the binary
+        # INSTALL_RPATH "$ORIGIN"                 # Set for installed binaries too
+        # BUILD_WITH_INSTALL_RPATH TRUE           # Ensure RPATH is embedded during the build
         VERSION ${NVSERV_LIBRARY_VERSION}       # Semantic Version of library
         SOVERSION ${NVSERV_LIBRARY_SOVERSION}   # Linker version for sysmlink
     )
