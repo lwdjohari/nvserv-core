@@ -21,20 +21,20 @@ class Value {
   Value& operator=(const Value& other);  // Copy assignment operator
   Value& operator[](const std::string& key);
 
-  void operator=(const std::string& value);
-  void operator=(const char* value);
-  void operator=(int value);
-  void operator=(double value);
-  void operator=(bool value);
-  void operator=(const std::optional<std::string>& value);
-  void operator=(const std::optional<int>& value);
-  void operator=(const std::optional<double>& value);
-  void operator=(const std::optional<bool>& value);
-  void operator=(const std::vector<Value>& value);
-  void operator=(const std::vector<std::string>& value);
-  void operator=(const std::vector<int>& value);
-  void operator=(const std::vector<double>& value);
-  void operator=(const std::vector<bool>& value);
+  Value& operator=(const std::string& value);
+  Value& operator=(const char* value);
+  Value& operator=(int value);
+  Value& operator=(double value);
+  Value& operator=(bool value);
+  Value& operator=(const std::optional<std::string>& value);
+  Value& operator=(const std::optional<int>& value);
+  Value& operator=(const std::optional<double>& value);
+  Value& operator=(const std::optional<bool>& value);
+  Value& operator=(const std::vector<Value>& value);
+  Value& operator=(const std::vector<std::string>& value);
+  Value& operator=(const std::vector<int>& value);
+  Value& operator=(const std::vector<double>& value);
+  Value& operator=(const std::vector<bool>& value);
 
   template <typename T>
   T As() const;

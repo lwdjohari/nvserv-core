@@ -41,7 +41,7 @@ Value& Value::operator[](const std::string& key) {
   return *this;
 }
 
-void Value::operator=(const std::string& value) {
+Value& Value::operator=(const std::string& value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -50,9 +50,10 @@ void Value::operator=(const std::string& value) {
   if (current_value_) {
     *current_value_ = rapidjson::Value(value.c_str(), allocator_);
   }
+  return *this;
 }
 
-void Value::operator=(const char* value) {
+Value& Value::operator=(const char* value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -61,9 +62,10 @@ void Value::operator=(const char* value) {
   if (current_value_) {
     *current_value_ = rapidjson::Value(value, allocator_);
   }
+  return *this;
 }
 
-void Value::operator=(int value) {
+Value& Value::operator=(int value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -72,9 +74,11 @@ void Value::operator=(int value) {
   if (current_value_) {
     *current_value_ = rapidjson::Value(value);
   }
+
+  return *this;
 }
 
-void Value::operator=(double value) {
+Value& Value::operator=(double value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -83,9 +87,11 @@ void Value::operator=(double value) {
   if (current_value_) {
     *current_value_ = rapidjson::Value(value);
   }
+
+  return *this;
 }
 
-void Value::operator=(bool value) {
+Value& Value::operator=(bool value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -94,41 +100,51 @@ void Value::operator=(bool value) {
   if (current_value_) {
     *current_value_ = rapidjson::Value(value);
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::optional<std::string>& value) {
+Value& Value::operator=(const std::optional<std::string>& value) {
   if (value.has_value()) {
     *this = value.value();
   } else {
     *current_value_ = rapidjson::Value(rapidjson::kNullType);
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::optional<int>& value) {
+Value& Value::operator=(const std::optional<int>& value) {
   if (value.has_value()) {
     *this = value.value();
   } else {
     *current_value_ = rapidjson::Value(rapidjson::kNullType);
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::optional<double>& value) {
+Value& Value::operator=(const std::optional<double>& value) {
   if (value.has_value()) {
     *this = value.value();
   } else {
     *current_value_ = rapidjson::Value(rapidjson::kNullType);
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::optional<bool>& value) {
+Value& Value::operator=(const std::optional<bool>& value) {
   if (value.has_value()) {
     *this = value.value();
   } else {
     *current_value_ = rapidjson::Value(rapidjson::kNullType);
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::vector<Value>& value) {
+Value& Value::operator=(const std::vector<Value>& value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -144,9 +160,11 @@ void Value::operator=(const std::vector<Value>& value) {
   if (current_value_) {
     *current_value_ = array;
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::vector<std::string>& value) {
+Value& Value::operator=(const std::vector<std::string>& value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -160,9 +178,11 @@ void Value::operator=(const std::vector<std::string>& value) {
   if (current_value_) {
     *current_value_ = array;
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::vector<int>& value) {
+Value& Value::operator=(const std::vector<int>& value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -176,9 +196,11 @@ void Value::operator=(const std::vector<int>& value) {
   if (current_value_) {
     *current_value_ = array;
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::vector<double>& value) {
+Value& Value::operator=(const std::vector<double>& value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -192,9 +214,11 @@ void Value::operator=(const std::vector<double>& value) {
   if (current_value_) {
     *current_value_ = array;
   }
+
+  return *this;
 }
 
-void Value::operator=(const std::vector<bool>& value) {
+Value& Value::operator=(const std::vector<bool>& value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
@@ -208,6 +232,8 @@ void Value::operator=(const std::vector<bool>& value) {
   if (current_value_) {
     *current_value_ = array;
   }
+
+  return *this;
 }
 
 std::vector<uint8_t> Value::SerializeToBytes() const {
@@ -218,6 +244,6 @@ std::vector<uint8_t> Value::SerializeToBytes() const {
   }
 
   const char* json_str = buffer.GetString();
-  return std::vector<uint8_t>(json_str, json_str + buffer.GetSize());
+  return __NR_RETURN_MOVE(std::vector<uint8_t>(json_str, json_str + buffer.GetSize()));
 }
 NVSERV_END_NAMESPACE
