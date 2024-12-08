@@ -13,7 +13,7 @@ class ComponentLocator {
 
   virtual ~ComponentLocator();
 
-  void AttachComponentList(ComponentListBasePtr&& component_list) ;
+  void AttachComponentList(ComponentListBasePtr&& component_list);
 
   void DetachComponentList();
 
@@ -21,9 +21,9 @@ class ComponentLocator {
 
   ComponentListBasePtr Components();
 
-  const ComponentListBasePtr Components() const;
+  ComponentListBasePtr Components() const;
 
-  const ComponentBasePtr Resolve(const std::string& name) const;
+  ComponentBasePtr Resolve(const std::string& name) const;
 
   ComponentBasePtr Resolve(const std::string& name);
 

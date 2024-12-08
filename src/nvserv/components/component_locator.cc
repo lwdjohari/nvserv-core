@@ -30,21 +30,23 @@ ComponentListBasePtr ComponentLocator::Components() {
   return components_;
 }
 
-const ComponentListBasePtr ComponentLocator::Components() const {
+ComponentListBasePtr ComponentLocator::Components() const {
   return components_;
 }
 
-const ComponentBasePtr ComponentLocator::Resolve(
+ ComponentBasePtr ComponentLocator::Resolve(
     const std::string& name) const {
-  if (!components_)
+  if (!components_){
     return nullptr;
+  }
 
   return components_->GetComponent(name);
 }
 
 ComponentBasePtr ComponentLocator::Resolve(const std::string& name) {
-  if (!components_)
+  if (!components_){
     return nullptr;
+  }
 
   return components_->GetComponent(name);
 }

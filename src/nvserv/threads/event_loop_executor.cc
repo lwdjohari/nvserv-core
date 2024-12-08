@@ -66,8 +66,9 @@ void EventLoopExecutor::RunLoop() {
 
     {
       absl::MutexLock lock(&mutex_);
-      if (stop_ && tasks_.empty())
+      if (stop_ && tasks_.empty()){
         break;
+      }
 
       auto now = absl::Now();
 
@@ -99,9 +100,9 @@ void EventLoopExecutor::RunLoop() {
       try {
         task();
       } catch (const std::exception& e) {
-        std::cerr << "Task execution error: " << e.what() << std::endl;
+        std::cerr << "Task execution error: " << e.what() << "\n";
       } catch (...) {
-        std::cerr << "Unknown task execution error." << std::endl;
+        std::cerr << "Unknown task execution error." << "\n";
       }
       absl::Time task_end = absl::Now();
       absl::Duration task_duration = task_end - task_start;
