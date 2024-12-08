@@ -29,6 +29,7 @@ NVSERV_BEGIN_ROOT_NAMESPACE
 
 using Exception = nvm::Exception;
 using BadAllocationException = nvm::BadAllocationException;
+using IoException = nvm::IoException;
 using CastException = nvm::CastException;
 using InvalidArgException = nvm::InvalidArgException;
 using NullReferenceException = nvm::NullReferenceException;
