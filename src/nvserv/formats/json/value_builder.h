@@ -56,13 +56,13 @@ class ValueBuilder {
       const ValueBuilder& other);  // Copy assignment operator
   ValueBuilder& operator[](const std::string& key);
 
-  void operator=(const std::string& value);
-  void operator=(const char* value);
-  void operator=(unsigned int value);
-  void operator=(int value);
-  void operator=(float value);
-  void operator=(double value);
-  void operator=(bool value);
+  ValueBuilder& operator=(const std::string& value);
+  ValueBuilder& operator=(const char* value);
+  ValueBuilder& operator=(unsigned int value);
+  ValueBuilder& operator=(int value);
+  ValueBuilder& operator=(float value);
+  ValueBuilder& operator=(double value);
+  ValueBuilder& operator=(bool value);
   // void operator=(const std::optional<std::string>& value);
   // void operator=(const std::optional<int>& value);
   // void operator=(const std::optional<double>& value);

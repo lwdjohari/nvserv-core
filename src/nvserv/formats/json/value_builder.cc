@@ -22,7 +22,7 @@ ValueBuilder::ValueBuilder(const ValueBuilder& other)
 // ValueBuilder::~ValueBuilder() {}
 
 rapidjson::Value* ValueBuilder::GetNodeValue() {
-  if (value_nodes_.size() == 0) {
+  if (value_nodes_.empty()) {
     return &document_;
   } else {
     return value_nodes_.back().value;
@@ -30,8 +30,9 @@ rapidjson::Value* ValueBuilder::GetNodeValue() {
 }
 
 ValueBuilder& ValueBuilder::operator=(const ValueBuilder& other) {
-  if (this == &other)
+  if (this == &other){
     return *this;
+  }
 
   if (is_empty_) {
     document_.SetObject();
@@ -91,10 +92,12 @@ ValueBuilder& ValueBuilder::operator[](const std::string& key) {
 // overload = operators
 
 void ValueBuilder::CreateJsonObject() {
-  if (!current_value_)
+  if (!current_value_){
     throw std::runtime_error(
         "please call `json[\"key_name\"].CreateJsonObject()` before call "
         "CreateJsonObject on root");
+  }
+
   if (current_type_ == JsonValueType::kUnknown) {
     current_value_->SetObject();
     current_type_ = JsonValueType::kObjectType;
@@ -105,14 +108,15 @@ void ValueBuilder::CreateJsonObject() {
   value_nodes_.clear();
 };
 
-void ValueBuilder::operator=(const std::string& value) {
+ValueBuilder& ValueBuilder::operator=(const std::string& value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
   }
 
-  if (!current_value_)
-    return;
+  if (!current_value_){
+    return *this;
+  }
 
   if (current_type_ == JsonValueType::kUnknown ||
       current_type_ == JsonValueType::kStringType) {
@@ -124,16 +128,19 @@ void ValueBuilder::operator=(const std::string& value) {
 
   // must clear the nodes when do assignment
   value_nodes_.clear();
+
+  return *this;
 }
 
-void ValueBuilder::operator=(unsigned int value) {
+ValueBuilder& ValueBuilder::operator=(unsigned int value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
   }
 
-  if (!current_value_)
-    return;
+  if (!current_value_){
+    return *this;
+  }
 
   if (current_type_ == JsonValueType::kUnknown ||
       current_type_ == JsonValueType::kNumberType) {
@@ -145,16 +152,19 @@ void ValueBuilder::operator=(unsigned int value) {
 
   // must clear the nodes when do assignment
   value_nodes_.clear();
+
+  return *this;
 }
 
-void ValueBuilder::operator=(int value) {
+ValueBuilder& ValueBuilder::operator=(int value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
   }
 
-  if (!current_value_)
-    return;
+  if (!current_value_){
+    return *this;
+  }
 
   if (current_type_ == JsonValueType::kUnknown ||
       current_type_ == JsonValueType::kNumberType) {
@@ -166,16 +176,19 @@ void ValueBuilder::operator=(int value) {
 
   // must clear the nodes when do assignment
   value_nodes_.clear();
+
+  return *this;
 }
 
-void ValueBuilder::operator=(double value) {
+ValueBuilder& ValueBuilder::operator=(double value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
   }
 
-  if (!current_value_)
-    return;
+  if (!current_value_){
+    return *this;
+  }
 
   if (current_type_ == JsonValueType::kUnknown ||
       current_type_ == JsonValueType::kNumberType) {
@@ -187,16 +200,19 @@ void ValueBuilder::operator=(double value) {
 
   // must clear the nodes when do assignment
   value_nodes_.clear();
+
+  return *this;
 }
 
-void ValueBuilder::operator=(float value) {
+ValueBuilder& ValueBuilder::operator=(float value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
   }
 
-  if (!current_value_)
-    return;
+  if (!current_value_){
+    return *this;
+  }
 
   if (current_type_ == JsonValueType::kUnknown ||
       current_type_ == JsonValueType::kNumberType) {
@@ -208,16 +224,19 @@ void ValueBuilder::operator=(float value) {
 
   // must clear the nodes when do assignment
   value_nodes_.clear();
+
+  return *this;
 }
 
-void ValueBuilder::operator=(bool value) {
+ValueBuilder& ValueBuilder::operator=(bool value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
   }
 
-  if (!current_value_)
-    return;
+  if (!current_value_){
+    return *this;
+  }
 
   if (current_type_ == JsonValueType::kUnknown ||
       current_type_ == JsonValueType::kFalseType ||
@@ -229,16 +248,19 @@ void ValueBuilder::operator=(bool value) {
 
   // must clear the nodes when do assignment
   value_nodes_.clear();
+
+  return *this;
 }
 
-void ValueBuilder::operator=(const char* value) {
+ValueBuilder& ValueBuilder::operator=(const char* value) {
   if (is_empty_) {
     document_.SetObject();
     is_empty_ = false;
   }
 
-  if (!current_value_)
-    return;
+  if (!current_value_){
+    return *this;
+  }
 
   if (current_type_ == JsonValueType::kUnknown ||
       current_type_ == JsonValueType::kStringType) {
@@ -249,6 +271,8 @@ void ValueBuilder::operator=(const char* value) {
 
   // must clear the nodes when do assignment
   value_nodes_.clear();
+
+  return *this;
 }
 
 JsonBuffer ValueBuilder::SerializeToBytes() const {
