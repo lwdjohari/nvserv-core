@@ -31,7 +31,7 @@ bool YamlReader::IsOk() const {
   return true;
 }
 
-const YamlNodePtr YamlReader::Root() const {
+YamlNodePtr YamlReader::Root() const {
   if (!root_) {
     return __NR_RETURN_MOVE(std::make_shared<YamlNode>(this, nullptr, false));
   }
@@ -68,7 +68,7 @@ std::vector<YamlNodePtr> YamlReader::Nodes(const YamlNodePtr parent) const {
   for (ryml::NodeRef child = node_ref->first_child(); !child.invalid();
        child = child.next_sibling()) {
     result.push_back(std::move(std::make_shared<YamlNode>(
-        this, std::move(std::make_shared<ryml::NodeRef>(std::move(child))),
+        this, std::move(std::make_shared<ryml::NodeRef>(child)),
         true)));
   }
 
@@ -124,8 +124,9 @@ void YamlReader::LoadFromBytes(const char* data, std::size_t size) {
 
 bool YamlReader::IsNodeIsSeqOrMap(const YamlNodePtr parent) const {
   auto node_ref = __GetNodeRef(*parent, this);
-  if (!node_ref)
+  if (!node_ref){
     return false;
+  }
 
   if (!node_ref->is_map() && !node_ref->is_seq()) {
     return false;
@@ -158,8 +159,9 @@ YamlNodeType YamlNode::Type() const {
 }
 
 YamlNodeType YamlNode::GetNodeType(std::shared_ptr<ryml::NodeRef> node) const {
-  if (!node)
+  if (!node){
     return YamlNodeType::Invalid;
+  }
 
   if (node->is_map()) {
     return YamlNodeType::Map;

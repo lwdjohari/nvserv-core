@@ -51,7 +51,7 @@ class YamlReader {
   explicit YamlReader(const uint8_t* bytes, size_t size);
   virtual ~YamlReader();
 
-  const YamlNodePtr Root() const;
+  YamlNodePtr Root() const;
   std::vector<YamlNodePtr> Nodes(const YamlNodePtr parent) const;
   std::vector<std::string> Keys(const YamlNodePtr parent) const;
   std::vector<std::string> Keys(const std::string& parent_key) const;
