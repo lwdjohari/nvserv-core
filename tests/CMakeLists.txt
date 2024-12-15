@@ -30,7 +30,10 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # Link the Catch2 library to the test executable
-target_link_libraries(${PROJECT_NAME} PUBLIC Catch2::Catch2WithMain nvserv::core)
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+    Catch2::Catch2WithMain 
+    nvserv::core
+)
 
 # Set the C++ standard
 # set_target_properties(${PROJECT_NAME} PROPERTIES

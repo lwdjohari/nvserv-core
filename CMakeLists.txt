@@ -129,9 +129,8 @@ target_include_directories(${PROJECT_NAME}_core
 
 add_library(${PROJECT_NAME}::core ALIAS ${PROJECT_NAME}_core )
 
-if(NOT TARGET nvserv::core )
-    message(STATUS "Unit-Test nvserv::core: ${NVSERV_USE_TEST}")
-    if(NVSERV_USE_TEST)
-        add_subdirectory(tests)
-    endif()  
-endif()
+
+message(STATUS "Unit-Test nvserv::core: ${NVSERV_USE_TEST}")
+if(NVSERV_USE_TEST)
+    add_subdirectory(tests)
+endif()  
