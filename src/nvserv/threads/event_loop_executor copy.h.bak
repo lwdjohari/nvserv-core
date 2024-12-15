@@ -43,25 +43,21 @@ class EventLoopExecutor {
   enum class TaskType { None, RunOnce, RunAtInterval };
 
   using Task = std::function<void()>;
-  using TaskPtr = std::shared_ptr<Task>;
 
   EventLoopExecutor();
 
   ~EventLoopExecutor();
 
-  // Submit task without change the ownership of Task
-  void SubmitTask(TaskPtr task, TaskType type, absl::Duration deadline,
-                  absl::Duration interval = absl::ZeroDuration());
-
-  // Move the task ownership to EventLoopExecutor ownership
-  void SubmitTask(TaskPtr&& task, TaskType type, absl::Duration deadline,
+  void SubmitTask(Task task, TaskType type, absl::Duration deadline,
                   absl::Duration interval = absl::ZeroDuration());
 
   void Stop();
+  void StopWithDeadline(absl::Duration deadline);
+  void Join();
 
  private:
   struct TaskItem {
-    std::shared_ptr<Task> task;
+    Task task;
     TaskType type;
     absl::Duration interval;
   };
@@ -74,12 +70,5 @@ class EventLoopExecutor {
 
   void RunLoop();
 };
-
-
-template <typename TCallable>
-  static std::shared_ptr<EventLoopExecutor::Task> MakeTaskPtr(TCallable&& task) {
-    return std::make_shared<EventLoopExecutor::Task>(
-        std::forward<TCallable>(task));
-  }
 
 NVSERV_END_NAMESPACE
